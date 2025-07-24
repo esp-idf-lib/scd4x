@@ -1,0 +1,11 @@
+---
+version: 1.0.0
+description: default
+dependencies:
+  esp-idf-lib/scd4x:
+    version: "*"
+    override_path: "../../../"
+  esp-idf-lib/i2cdev:
+    version: "*"
+  esp-idf-lib/esp_idf_lib_helpers:
+    version: "*"
