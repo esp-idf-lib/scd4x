@@ -1,5 +1,9 @@
 # esp-idf-lib/scd4x
 
+[![Build examples](https://github.com/esp-idf-lib/scd4x/actions/workflows//build.yml/badge.svg)](https://github.com/esp-idf-lib/scd4x/actions/workflows//build.yml)
+[![Build docs](https://github.com/esp-idf-lib/scd4x/actions/workflows//build-docs.yml/badge.svg)](https://github.com/esp-idf-lib/scd4x/actions/workflows//build-docs.yml)
+[![Validation](https://github.com/esp-idf-lib/scd4x/actions/workflows//validate-component.yml/badge.svg)](https://github.com/esp-idf-lib/scd4x/actions/workflows//validate-component.yml)
+
 Driver for SCD40/SCD41 miniature CO₂ sensor.
 
 * [Documentation](https://esp-idf-lib.github.io/scd4x/)
@@ -11,7 +15,7 @@ Driver for SCD40/SCD41 miniature CO₂ sensor.
 ## Installation
 
 ```sh
-idf.py add-dependency esp-idf-lib/scd4x^1.0.0
+idf.py add-dependency esp-idf-lib/scd4x
 ```
 
 ## Support
