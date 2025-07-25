@@ -11,7 +11,7 @@ Driver for SCD40/SCD41 miniature CO₂ sensor.
 ## Installation
 
 ```sh
-idf.py add-dependency "esp-idf-lib/scd4x^1.0.0
+idf.py add-dependency esp-idf-lib/scd4x^1.0.0
 ```
 
 ## Support
