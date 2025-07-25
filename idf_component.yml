@@ -26,4 +26,4 @@ issues: https://github.com/esp-idf-lib/scd4x/issues
 discussion: https://github.com/esp-idf-lib/core/discussions
 files:
   exclude:
-    - docs
+    - docs/**/*
