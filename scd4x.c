@@ -286,7 +286,7 @@ esp_err_t scd4x_get_automatic_self_calibration(i2c_dev_t *dev, bool *enabled)
     CHECK_ARG(enabled);
     uint16_t e = *enabled;
     esp_err_t err = execute_cmd(dev, CMD_GET_AUTOMATIC_SELF_CALIBRATION_ENABLED, 1, NULL, 0, &e, 1);
-    if(err == ESP_OK)
+    if (err == ESP_OK)
     {
         *enabled = !!e;
     }
