@@ -1,0 +1,43 @@
+From 1880bbb304149ffe1fea1a06ea1248567f475ad8 Mon Sep 17 00:00:00 2001
+From: nick black <dankamongmen@gmail.com>
+Date: Thu, 10 Oct 2024 10:42:49 -0400
+Subject: [PATCH] use word-sized params in scd4x self-calibration
+
+scd4x self-calibration passes bool and bool* to execute_cmd(),
+but this function eventually swaps its 16-bit argument words.
+a bool is typically represented by a single byte, and thus
+the swap() reads and writes past the end of the storage,
+canonical undefined behavior. instead, copy the bool to a
+local uint16_t, and pass that as the single word. in the
+get() variant, copy the uint16_t back to the bool on success.
+---
+ components/scd4x/scd4x.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/components/scd4x/scd4x.c b/components/scd4x/scd4x.c
+index e9d97def4..b91f46f0a 100644
+--- a/components/scd4x/scd4x.c
++++ b/components/scd4x/scd4x.c
+@@ -284,13 +284,19 @@ esp_err_t scd4x_perform_forced_recalibration(i2c_dev_t *dev, uint16_t target_co2
+ esp_err_t scd4x_get_automatic_self_calibration(i2c_dev_t *dev, bool *enabled)
+ {
+     CHECK_ARG(enabled);
+-
+-    return execute_cmd(dev, CMD_GET_AUTOMATIC_SELF_CALIBRATION_ENABLED, 1, NULL, 0, (uint16_t *)enabled, 1);
++    uint16_t e = *enabled;
++    esp_err_t err = execute_cmd(dev, CMD_GET_AUTOMATIC_SELF_CALIBRATION_ENABLED, 1, NULL, 0, &e, 1);
++    if(err == ESP_OK)
++    {
++        *enabled = !!e;
++    }
++    return err;
+ }
+ 
+ esp_err_t scd4x_set_automatic_self_calibration(i2c_dev_t *dev, bool enabled)
+ {
+-    return execute_cmd(dev, CMD_SET_AUTOMATIC_SELF_CALIBRATION_ENABLED, 1, (uint16_t *)&enabled, 1, NULL, 0);
++    uint16_t e = enabled;
++    return execute_cmd(dev, CMD_SET_AUTOMATIC_SELF_CALIBRATION_ENABLED, 1, &e, 1, NULL, 0);
+ }
+ 
+ esp_err_t scd4x_start_low_power_periodic_measurement(i2c_dev_t *dev)
