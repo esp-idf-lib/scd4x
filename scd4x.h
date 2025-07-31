@@ -258,7 +258,7 @@ esp_err_t scd4x_set_ambient_pressure(i2c_dev_t *dev, uint16_t pressure);
  * @return                         `ESP_OK` on success
  */
 esp_err_t scd4x_perform_forced_recalibration(i2c_dev_t *dev,
-        uint16_t target_co2_concentration, uint16_t *frc_correction);
+                                             uint16_t target_co2_concentration, uint16_t *frc_correction);
 
 /**
  * @brief Get automatic self calibration (ASC) state.

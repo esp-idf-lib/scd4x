@@ -141,7 +141,7 @@ static esp_err_t read_resp(i2c_dev_t *dev, uint16_t *data, size_t words)
 }
 
 static esp_err_t execute_cmd(i2c_dev_t *dev, uint16_t cmd, uint32_t timeout_ms,
-        uint16_t *out_data, size_t out_words, uint16_t *in_data, size_t in_words)
+                             uint16_t *out_data, size_t out_words, uint16_t *in_data, size_t in_words)
 {
     CHECK_ARG(dev);
 
@@ -273,12 +273,12 @@ esp_err_t scd4x_set_ambient_pressure(i2c_dev_t *dev, uint16_t pressure)
 }
 
 esp_err_t scd4x_perform_forced_recalibration(i2c_dev_t *dev, uint16_t target_co2_concentration,
-        uint16_t *frc_correction)
+                                             uint16_t *frc_correction)
 {
     CHECK_ARG(frc_correction);
 
     return execute_cmd(dev, CMD_PERFORM_FORCED_RECALIBRATION, 400,
-            &target_co2_concentration, 1, frc_correction, 1);
+                       &target_co2_concentration, 1, frc_correction, 1);
 }
 
 esp_err_t scd4x_get_automatic_self_calibration(i2c_dev_t *dev, bool *enabled)
