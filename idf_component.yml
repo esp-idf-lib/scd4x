@@ -1,7 +1,7 @@
 ---
 version: 1.0.8
 description: Driver for SCD40/SCD41 miniature CO₂ sensor
-license: BSD-3
+license: BSD-3-clause
 targets:
   - esp32
   - esp32c2
