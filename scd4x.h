@@ -412,7 +412,18 @@ esp_err_t scd4x_power_down(i2c_dev_t *dev);
 /**
  * @brief Wake up sensor from sleep mode to idle mode.
  *
+ * Per SCD4x datasheet, the sensor does not acknowledge the
+ * wake_up command while in sleep mode. This function handles the special
+ * case by temporarily disabling ACK checking.
+ *
+ * The function:
+ * 1. Disables ACK checking
+ * 2. Sends wake-up command
+ * 3. Waits 30ms for sensor wake-up
+ * 4. Re-enables ACK checking
+ *
  * @note Only available in sleep mode.
+ * @note After wake-up, all subsequent commands expect normal ACK behavior
  *
  * @param dev Device descriptor
  * @return    `ESP_OK` on success

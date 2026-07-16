@@ -175,6 +175,10 @@ esp_err_t scd4x_init_desc(i2c_dev_t *dev, i2c_port_t port, gpio_num_t sda_gpio, 
     dev->cfg.master.clk_speed = I2C_FREQ_HZ;
 #endif
 
+    // Explicit ACK enable (not strictly required - defaults to false via zero-init,
+    // but documented here since wake_up will temporarily disable it)
+    dev->disable_ack_check = false;
+
     return i2c_dev_create_mutex(dev);
 }
 
@@ -367,5 +371,33 @@ esp_err_t scd4x_power_down(i2c_dev_t *dev)
 
 esp_err_t scd4x_wake_up(i2c_dev_t *dev)
 {
-    return execute_cmd(dev, CMD_WAKE_UP, 20, NULL, 0, NULL, 0);
+    CHECK_ARG(dev);
+
+    // The SCD4x does not acknowledge the wake_up command
+    // Temporarily disable ACK checking for this specific command
+    bool original_ack = dev->disable_ack_check;
+    dev->disable_ack_check = true;
+
+    // Invalidate device handle to force recreation with new ACK setting
+    esp_err_t res = i2c_dev_invalidate_handle(dev);
+    if (res != ESP_OK)
+    {
+        dev->disable_ack_check = original_ack;  // Restore on error
+        return res;
+    }
+
+    // Send wake-up command (device handle will be recreated with ACK disabled)
+    // Timeout: 30ms per https://github.com/UncleRus/esp-idf-lib/pull/700 testing
+    res = execute_cmd(dev, CMD_WAKE_UP, 30, NULL, 0, NULL, 0);
+
+    // Restore original ACK setting for subsequent operations
+    dev->disable_ack_check = original_ack;
+
+    // Invalidate handle again to restore ACK checking
+    // (next I2C operation will recreate handle with ACK enabled)
+    esp_err_t invalidate_res = i2c_dev_invalidate_handle(dev);
+    if (res == ESP_OK && invalidate_res != ESP_OK)
+        res = invalidate_res;  // Propagate invalidation error if wake-up succeeded
+
+    return res;
 }
