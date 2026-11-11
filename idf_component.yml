@@ -1,18 +1,7 @@
 ---
-version: 1.0.8
+version: 1.0.9
 description: Driver for SCD40/SCD41 miniature CO₂ sensor
-license: BSD-3-clause
-targets:
-  - esp32
-  - esp32c2
-  - esp32c3
-  - esp32c5
-  - esp32c6
-  - esp32c61
-  - esp32h2
-  - esp32p4
-  - esp32s2
-  - esp32s3
+license: BSD-3-Clause
 dependencies:
   esp-idf-lib/i2cdev:
     version: "*"
