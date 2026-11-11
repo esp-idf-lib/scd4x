@@ -1,7 +1,7 @@
 ---
 name: scd4x
 description: Driver for SCD40/SCD41 miniature CO₂ sensor
-version: 1.0.8
+version: 1.0.9
 groups:
   - gas
   - air-quality
