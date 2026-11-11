@@ -11,7 +11,7 @@ depends:
   - log
   - esp_idf_lib_helpers
 thread_safe: yes
-license: BSD-3
+license: BSD-3-Clause
 copyrights:
   - name: UncleRus
     year: 2021
